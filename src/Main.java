@@ -1,15 +1,56 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Stack;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        Scanner scan = new Scanner(System.in);
+        String entrada = scan.nextLine();
+        String[] simbolosString = entrada.split(" ");
+
+        Queue<Simbolo> filaInfixa = new LinkedList<>();
+        Queue<Simbolo> filaPosfixa = new LinkedList<>();
+        Stack<Simbolo> pilhaConv = new Stack<>();
+
+        for(String simbStr : simbolosString) {
+            filaInfixa.add(new Simbolo(simbStr));
         }
+
+        System.out.println(filaInfixa);
+
+        Simbolo simbFila, simbPilha;
+
+        while (!filaInfixa.isEmpty()) {
+            simbFila = filaInfixa.poll();
+            if (simbFila.isOperando()){
+                filaPosfixa.offer(simbFila);
+            } else if (simbFila.isAbreParenteses()) {
+                pilhaConv.push(simbFila);
+            } else if (simbFila.isOperador()) {
+                while (!pilhaConv.isEmpty() && pilhaConv.peek().verificaPrioridade() >= simbFila.verificaPrioridade()) {
+                    simbPilha = pilhaConv.pop();
+                    filaPosfixa.offer(simbPilha);
+                }
+                pilhaConv.push(simbFila);
+            } else if(simbFila.isFechaParenteses()) {
+                while (!pilhaConv.peek().isAbreParenteses()) {
+                    simbPilha = pilhaConv.pop();
+                    filaPosfixa.offer(simbPilha);
+                }
+                pilhaConv.pop();
+            }
+        }
+        while (!pilhaConv.isEmpty()) {
+            simbPilha = pilhaConv.pop();
+            filaPosfixa.offer(simbPilha);
+        }
+
+        System.out.println(filaPosfixa);
+
+
+
     }
+
 }
