@@ -31,8 +31,21 @@ public class Simbolo {
         }
     }
 
+    public int calcularOperador(int a, int b){
+        int resultado = switch (this.valor) {
+            case "+" -> b + a;
+            case "-" -> b - a;
+            case "*" -> b * a;
+            case "/" -> b / a;
+            case "%" -> b % a;
+            default -> 0;
+        };
+        return resultado;
+    }
+
     @Override
     public String toString() {
         return this.valor;
     }
+
 }
