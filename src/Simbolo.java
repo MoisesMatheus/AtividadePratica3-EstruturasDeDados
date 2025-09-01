@@ -10,7 +10,7 @@ public class Simbolo {
     }
 
     public boolean isOperador() {
-        return "+-*/".indexOf(this.valor) >= 0;
+        return "+-*/".contains(this.valor);
     }
 
     public boolean isAbreParenteses() {
@@ -32,7 +32,7 @@ public class Simbolo {
     }
 
     public int calcularOperador(int a, int b){
-        int resultado = switch (this.valor) {
+        return switch (this.valor) {
             case "+" -> b + a;
             case "-" -> b - a;
             case "*" -> b * a;
@@ -40,7 +40,6 @@ public class Simbolo {
             case "%" -> b % a;
             default -> 0;
         };
-        return resultado;
     }
 
     @Override
