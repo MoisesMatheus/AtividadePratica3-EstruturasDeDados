@@ -58,7 +58,7 @@ public class Main {
         Stack<Integer> pilhaCalc = new Stack<>();
         while (!posfixa.isEmpty())
         {
-            Simbolo simbFila = posfixa.peek();
+            Simbolo simbFila = posfixa.poll();
             if (simbFila.isOperando()) {
                 pilhaCalc.push(Integer.parseInt(simbFila.toString()));
             } else {
@@ -66,7 +66,6 @@ public class Main {
                 int operandoB = pilhaCalc.pop();
                 pilhaCalc.push(simbFila.calcularOperador(operandoA, operandoB));
             }
-            posfixa.remove();
         }
         return  pilhaCalc.peek();
     }
