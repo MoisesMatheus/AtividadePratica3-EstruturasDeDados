@@ -48,9 +48,26 @@ public class Main {
         }
 
         System.out.println(filaPosfixa);
+        System.out.println(computeExpression(filaPosfixa));
 
 
+    }
 
+    public static int computeExpression (Queue<Simbolo> posfixa)
+    {
+        Stack<Integer> pilhaCalc = new Stack<>();
+        while (!posfixa.isEmpty())
+        {
+            Simbolo simbFila = posfixa.poll();
+            if (simbFila.isOperando()) {
+                pilhaCalc.push(Integer.parseInt(simbFila.toString()));
+            } else {
+                int operandoA = pilhaCalc.pop();
+                int operandoB = pilhaCalc.pop();
+                pilhaCalc.push(simbFila.calcularOperador(operandoA, operandoB));
+            }
+        }
+        return  pilhaCalc.peek();
     }
 
 }
