@@ -6,50 +6,57 @@ import java.util.Stack;
 public class Main {
     public static void main(String[] args) {
 
-        Scanner scan = new Scanner(System.in);
-        String entrada = scan.nextLine();
-        String[] simbolosString = entrada.split(" ");
+        System.out.println("Para sair do programa, digite 'end'.");
+        while(true) {
+            Scanner scan = new Scanner(System.in);
 
-        Queue<Simbolo> filaInfixa = new LinkedList<>();
-        Queue<Simbolo> filaPosfixa = new LinkedList<>();
-        Stack<Simbolo> pilhaConv = new Stack<>();
-
-        for(String simbStr : simbolosString) {
-            filaInfixa.add(new Simbolo(simbStr));
-        }
-
-        System.out.println(filaInfixa);
-
-        Simbolo simbFila, simbPilha;
-
-        while (!filaInfixa.isEmpty()) {
-            simbFila = filaInfixa.poll();
-            if (simbFila.isOperando()){
-                filaPosfixa.offer(simbFila);
-            } else if (simbFila.isAbreParenteses()) {
-                pilhaConv.push(simbFila);
-            } else if (simbFila.isOperador()) {
-                while (!pilhaConv.isEmpty() && pilhaConv.peek().verificaPrioridade() >= simbFila.verificaPrioridade()) {
-                    simbPilha = pilhaConv.pop();
-                    filaPosfixa.offer(simbPilha);
-                }
-                pilhaConv.push(simbFila);
-            } else if(simbFila.isFechaParenteses()) {
-                while (!pilhaConv.peek().isAbreParenteses()) {
-                    simbPilha = pilhaConv.pop();
-                    filaPosfixa.offer(simbPilha);
-                }
-                pilhaConv.pop();
+            System.out.println("Expressão Matemática Infixa: ");
+            String entrada = scan.nextLine();
+            if(entrada.equalsIgnoreCase("end")){
+                break;
             }
-        }
-        while (!pilhaConv.isEmpty()) {
-            simbPilha = pilhaConv.pop();
-            filaPosfixa.offer(simbPilha);
-        }
+            String[] simbolosString = entrada.split(" ");
 
-        System.out.println(filaPosfixa);
-        System.out.println(computeExpression(filaPosfixa));
+            Queue<Simbolo> filaInfixa = new LinkedList<>();
+            Queue<Simbolo> filaPosfixa = new LinkedList<>();
+            Stack<Simbolo> pilhaConv = new Stack<>();
 
+            for (String simbStr : simbolosString) {
+                filaInfixa.add(new Simbolo(simbStr));
+            }
+
+            //System.out.println(filaInfixa);
+
+            Simbolo simbFila, simbPilha;
+
+            while (!filaInfixa.isEmpty()) {
+                simbFila = filaInfixa.poll();
+                if (simbFila.isOperando()) {
+                    filaPosfixa.offer(simbFila);
+                } else if (simbFila.isAbreParenteses()) {
+                    pilhaConv.push(simbFila);
+                } else if (simbFila.isOperador()) {
+                    while (!pilhaConv.isEmpty() && pilhaConv.peek().verificaPrioridade() >= simbFila.verificaPrioridade()) {
+                        simbPilha = pilhaConv.pop();
+                        filaPosfixa.offer(simbPilha);
+                    }
+                    pilhaConv.push(simbFila);
+                } else if (simbFila.isFechaParenteses()) {
+                    while (!pilhaConv.peek().isAbreParenteses()) {
+                        simbPilha = pilhaConv.pop();
+                        filaPosfixa.offer(simbPilha);
+                    }
+                    pilhaConv.pop();
+                }
+            }
+            while (!pilhaConv.isEmpty()) {
+                simbPilha = pilhaConv.pop();
+                filaPosfixa.offer(simbPilha);
+            }
+
+            //System.out.println(filaPosfixa);
+            System.out.println("Resultado: "+computeExpression(filaPosfixa));
+        }
 
     }
 
